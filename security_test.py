@@ -2,12 +2,11 @@
 import subprocess
 
 def get_user_profile(user_id):
-    # Intentionally insecure for scanner testing:
-    # user input is passed to a shell command.
-    command = "echo " + user_id
-    return subprocess.run(
-        command,
-        shell=True,
+    result = subprocess.run(
+        ["echo", user_id],
+        shell=False,
         capture_output=True,
-        text=True
-    ).stdout
+        text=True,
+        check=True
+    )
+    return result.stdout
