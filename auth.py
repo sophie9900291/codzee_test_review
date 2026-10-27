@@ -2,11 +2,18 @@
 import sqlite3
 import hashlib
 
+import sqlite3
+
 def login(username, password):
-    # Intentionally insecure: SQL injection
     conn = sqlite3.connect("users.db")
-    query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'"
-    return conn.execute(query).fetchone()
+    try:
+        query = """
+            SELECT * FROM users
+            WHERE username = ? AND password = ?
+        """
+        return conn.execute(query, (username, password)).fetchone()
+    finally:
+        conn.close()
 
 def hash_password(password):
     # Intentionally weak password hashing
